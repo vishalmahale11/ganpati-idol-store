@@ -1,0 +1,51 @@
+// Version: 1.0.0
+type ExternalBlob__671167343 = Blob;
+type IdolCategory__766556210 =
+  {#Clay; #EcoFriendly; #Fiber; #Marble; #Metal; #PlasterOfParis};
+type IdolId__697797215 = Nat;
+type IdolInternal__657524699 =
+  {
+    var category : IdolCategory__766556210;
+    createdAt : Int;
+    var description : Text;
+    var heightCm : Nat;
+    id : IdolId__697797215;
+    var images : [ExternalBlob__671167343];
+    var isActive : Bool;
+    var material : Text;
+    var name : Text;
+    var price : Nat;
+    var stockQuantity : Nat
+  };
+type InquiryId__938647102 = Nat;
+type InquiryInternal__421468273 =
+  {
+    createdAt : Int;
+    customerName : Text;
+    email : Text;
+    id : InquiryId__938647102;
+    idolId : IdolId__697797215;
+    idolName : Text;
+    var isRead : Bool;
+    message : Text;
+    phone : Text;
+    preferredContact : Text
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+actor {
+  stable idols :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?IdolInternal__657524699]];
+      var elementIndex : Nat__490723111
+    };
+  stable inquiries :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?InquiryInternal__421468273]];
+      var elementIndex : Nat__490723111
+    };
+  stable nextIdolId : {var value : Nat};
+  stable nextInquiryId : {var value : Nat}
+};

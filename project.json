@@ -1,0 +1,22 @@
+{
+  "overview": "A two-sided Ganpati idol marketplace featuring a beautiful public storefront for browsing and purchasing inquiries, and a full admin panel for managing idol catalogs with image uploads.",
+  "features": [
+    "Admin catalog management with image upload",
+    "Public idol browsing by category",
+    "Beautiful landing page with hero section",
+    "Purchase inquiry contact form",
+    "Admin inquiry inbox",
+    "Idol detail view with image gallery"
+  ],
+  "category": "ecommerce",
+  "tags": [
+    "ganpati",
+    "idol",
+    "ecommerce",
+    "catalog",
+    "admin",
+    "religious",
+    "marketplace"
+  ],
+  "last_updated": "2026-04-21T15:22:13.823Z"
+}

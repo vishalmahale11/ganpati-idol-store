@@ -1,0 +1,109 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UpdateIdolInput = 
+ record {
+   category: IdolCategory;
+   description: text;
+   heightCm: nat;
+   id: IdolId;
+   images: vec ExternalBlob;
+   isActive: bool;
+   material: text;
+   name: text;
+   price: nat;
+   stockQuantity: nat;
+ };
+type SubmitInquiryInput = 
+ record {
+   customerName: text;
+   email: text;
+   idolId: IdolId;
+   idolName: text;
+   message: text;
+   phone: text;
+   preferredContact: text;
+ };
+type InquiryId = nat;
+type Inquiry = 
+ record {
+   createdAt: int;
+   customerName: text;
+   email: text;
+   id: InquiryId;
+   idolId: IdolId;
+   idolName: text;
+   isRead: bool;
+   message: text;
+   phone: text;
+   preferredContact: text;
+ };
+type IdolId = nat;
+type IdolCategory = 
+ variant {
+   Clay;
+   EcoFriendly;
+   Fiber;
+   Marble;
+   Metal;
+   PlasterOfParis;
+ };
+type Idol = 
+ record {
+   category: IdolCategory;
+   createdAt: int;
+   description: text;
+   heightCm: nat;
+   id: IdolId;
+   images: vec ExternalBlob;
+   isActive: bool;
+   material: text;
+   name: text;
+   price: nat;
+   stockQuantity: nat;
+ };
+type ExternalBlob = blob;
+type CreateIdolInput = 
+ record {
+   category: IdolCategory;
+   description: text;
+   heightCm: nat;
+   images: vec ExternalBlob;
+   material: text;
+   name: text;
+   price: nat;
+   stockQuantity: nat;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  archiveInquiry: (id: InquiryId) -> (bool);
+  categoryToText: (cat: IdolCategory) -> (text) query;
+  createIdol: (input: CreateIdolInput) -> (Idol);
+  deleteIdol: (id: IdolId) -> (bool);
+  getIdol: (id: IdolId) -> (opt Idol) query;
+  listAllIdols: () -> (vec Idol) query;
+  listIdols: () -> (vec Idol) query;
+  listInquiries: () -> (vec Inquiry) query;
+  markInquiryRead: (id: InquiryId) -> (bool);
+  submitInquiry: (input: SubmitInquiryInput) -> (Inquiry);
+  textToCategory: ("text": text) -> (opt IdolCategory) query;
+  updateIdol: (input: UpdateIdolInput) -> (bool);
+}
