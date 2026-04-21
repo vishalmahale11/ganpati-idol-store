@@ -2,16 +2,70 @@ import { Layout } from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useIdol } from "@/hooks/use-backend";
+import { useIdol, useSubmitInquiry } from "@/hooks/use-backend";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { categoryLabel, formatPrice } from "@/types";
 import { Link, useParams } from "@tanstack/react-router";
-import { ArrowLeft, MessageCircle, Package, Ruler, Tag } from "lucide-react";
+import {
+  ArrowLeft,
+  MessageCircle,
+  Package,
+  Ruler,
+  Tag,
+} from "lucide-react";
+import { useRef } from "react";
+import { toast } from "sonner";
 
 export function IdolDetailPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { idolId } = useParams({ strict: false }) as any;
   const id = BigInt(idolId ?? "0");
   const { data: idol, isLoading } = useIdol(id);
+  const submitInquiry = useSubmitInquiry();
+  const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER ?? "";
+  const lastWhatsAppEnquiryAt = useRef(0);
+
+  function handleWhatsAppEnquiry() {
+    if (!idol) return;
+    if (!whatsappNumber.trim()) {
+      toast.error(
+        "WhatsApp is not configured. Add VITE_WHATSAPP_NUMBER to your environment (digits only, e.g. 919876543210).",
+      );
+      return;
+    }
+    const now = Date.now();
+    if (now - lastWhatsAppEnquiryAt.current < 2500) return;
+    lastWhatsAppEnquiryAt.current = now;
+
+    const priceLabel = formatPrice(idol.price);
+    const waMessage = `Hi! I'm interested in "${idol.name}" (${priceLabel}). Please share availability and delivery options.`;
+    const url = buildWhatsAppUrl(whatsappNumber, waMessage);
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
+
+    submitInquiry.mutate(
+      {
+        idolId: idol.id,
+        idolName: idol.name,
+        customerName: "WhatsApp enquiry",
+        email: "whatsapp@pending.local",
+        phone: "—",
+        message: `Customer opened WhatsApp from the product page for this idol (ID ${idol.id.toString()}).`,
+        preferredContact: "WhatsApp",
+        source: "whatsapp",
+      },
+      {
+        onError: (err) => {
+          const aborted =
+            err instanceof Error && err.name === "AbortError";
+          toast.error(
+            aborted
+              ? "Saving the lead timed out — is the API running? Your WhatsApp chat was opened."
+              : "Could not save this lead in the admin panel. Your WhatsApp chat was still opened.",
+          );
+        },
+      },
+    );
+  }
 
   if (isLoading) {
     return (
@@ -166,29 +220,55 @@ export function IdolDetailPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link to="/contact" className="flex-1">
-                  <Button
-                    size="lg"
-                    className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-elevated transition-smooth"
-                    data-ocid="idol_detail.enquire.primary_button"
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    to="/contact"
+                    search={{
+                      idolId: idol.id.toString(),
+                      idolName: idol.name,
+                    }}
+                    className="flex-1"
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    Enquire to Purchase
+                    <Button
+                      size="lg"
+                      className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-elevated transition-smooth"
+                      data-ocid="idol_detail.enquire.primary_button"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Enquire to Purchase
+                    </Button>
+                  </Link>
+                  <Button
+                    type="button"
+                    size="lg"
+                    variant="outline"
+                    className="gap-2 border-border border-emerald-600/40 text-emerald-800 hover:bg-emerald-50 dark:text-emerald-200 dark:hover:bg-emerald-950/40"
+                    onClick={handleWhatsAppEnquiry}
+                    data-ocid="idol_detail.whatsapp.enquire_button"
+                  >
+                    <span className="text-lg leading-none" aria-hidden>
+                      💬
+                    </span>
+                    WhatsApp enquiry
                   </Button>
-                </Link>
-                <Link to="/catalog">
+                </div>
+                <Link to="/catalog" className="sm:w-auto w-full">
                   <Button
                     size="lg"
                     variant="outline"
-                    className="gap-2 border-border hover:border-primary transition-smooth"
+                    className="w-full sm:w-auto gap-2 border-border hover:border-primary transition-smooth"
                     data-ocid="idol_detail.back.secondary_button"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    Back
+                    Back to catalog
                   </Button>
                 </Link>
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Website enquiries appear in the admin panel. WhatsApp opens chat
+                and also logs a lead for your team.
+              </p>
             </div>
           </div>
         </div>

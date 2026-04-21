@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useSubmitInquiry } from "@/hooks/use-backend";
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import {
   CheckCircle,
   type LucideIcon,
@@ -14,7 +14,7 @@ import {
   Send,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface ContactInfoItem {
@@ -73,6 +73,9 @@ function ContactInfoRow({ item }: { item: ContactInfoItem }) {
 const PREFERRED_CONTACT_OPTIONS = ["Phone", "Email", "WhatsApp"];
 
 export function ContactPage() {
+  const { idolId: idolIdParam, idolName: idolNameParam } = useSearch({
+    from: "/contact",
+  });
   const submit = useSubmitInquiry();
   const [success, setSuccess] = useState(false);
   const [form, setForm] = useState({
@@ -83,6 +86,12 @@ export function ContactPage() {
     idolName: "",
     preferredContact: "Phone",
   });
+
+  useEffect(() => {
+    if (idolNameParam) {
+      setForm((f) => ({ ...f, idolName: idolNameParam }));
+    }
+  }, [idolNameParam]);
 
   function handleChange(field: keyof typeof form, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -95,18 +104,26 @@ export function ContactPage() {
       return;
     }
     try {
+      const linkedIdolId =
+        idolIdParam && idolIdParam !== "" ? BigInt(idolIdParam) : null;
       await submit.mutateAsync({
-        idolId: 0n,
-        idolName: form.idolName || "General Enquiry",
+        idolId: linkedIdolId,
+        idolName: form.idolName || "General enquiry",
         customerName: form.customerName,
         email: form.email,
         phone: form.phone,
         message: form.message,
         preferredContact: form.preferredContact,
+        source: "website",
       });
       setSuccess(true);
-    } catch {
-      toast.error("Failed to send inquiry. Please try again.");
+    } catch (e) {
+      const aborted = e instanceof Error && e.name === "AbortError";
+      toast.error(
+        aborted
+          ? "Request timed out. Check that the store API is running (e.g. port 4000) and your database is reachable."
+          : "Failed to send inquiry. Please try again.",
+      );
     }
   }
 

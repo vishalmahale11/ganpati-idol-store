@@ -47,28 +47,32 @@ export interface UpdateIdolInput {
   isActive: boolean;
 }
 
+export type InquirySource = "website" | "whatsapp";
+
 export interface Inquiry {
   id: InquiryId;
-  idolId: IdolId;
+  idolId: IdolId | null;
   idolName: string;
   customerName: string;
   email: string;
   phone: string;
   message: string;
   preferredContact: string;
+  source: InquirySource;
   isRead: boolean;
   isArchived: boolean;
   createdAt: bigint;
 }
 
 export interface SubmitInquiryInput {
-  idolId: IdolId;
+  idolId: IdolId | null;
   idolName: string;
   customerName: string;
   email: string;
   phone: string;
   message: string;
   preferredContact: string;
+  source?: InquirySource;
 }
 
 export function categoryLabel(cat: IdolCategory): string {

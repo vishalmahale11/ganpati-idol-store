@@ -140,7 +140,11 @@ export function HomePage() {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link to="/contact" data-ocid="hero.contact.secondary_button">
+              <Link
+                to="/contact"
+                search={{ idolId: undefined, idolName: undefined }}
+                data-ocid="hero.contact.secondary_button"
+              >
                 <Button
                   size="lg"
                   variant="outline"
@@ -291,7 +295,11 @@ export function HomePage() {
               Contact us for custom orders. We create bespoke Ganpati murtis
               tailored to your specific requirements.
             </p>
-            <Link to="/contact" data-ocid="cta.contact.primary_button">
+            <Link
+              to="/contact"
+              search={{ idolId: undefined, idolName: undefined }}
+              data-ocid="cta.contact.primary_button"
+            >
               <Button
                 size="lg"
                 className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-elevated transition-smooth px-10"

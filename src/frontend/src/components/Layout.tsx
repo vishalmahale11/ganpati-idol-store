@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { getAdminPanelBaseUrl } from "@/lib/adminHost";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, Shield, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
@@ -59,20 +60,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </nav>
 
-          {/* Admin Button */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link to="/admin" data-ocid="nav.admin.link">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2 border-border hover:border-primary hover:text-primary transition-smooth"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                Admin
-              </Button>
-            </Link>
-          </div>
-
           {/* Mobile menu toggle */}
           <button
             type="button"
@@ -106,12 +93,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </Link>
             ))}
-            <Link to="/admin" onClick={() => setMenuOpen(false)}>
+            <a href={getAdminPanelBaseUrl()} onClick={() => setMenuOpen(false)}>
               <Button variant="outline" size="sm" className="mt-2 gap-2 w-full">
                 <Shield className="w-3.5 h-3.5" />
                 Admin Panel
               </Button>
-            </Link>
+            </a>
           </div>
         )}
       </header>
@@ -137,7 +124,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <p className="text-xs text-muted-foreground">
               © {new Date().getFullYear()}. Built with love using{" "}
               <a
-                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
+                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(
+                  typeof window !== "undefined" ? window.location.hostname : ""
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"

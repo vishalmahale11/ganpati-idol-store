@@ -108,7 +108,7 @@ export function AdminDashboardPage() {
                 </p>
               )}
             </div>
-            <Link to="/admin/idols">
+            <Link to="/idols">
               <Button
                 variant="outline"
                 size="sm"
@@ -156,7 +156,7 @@ export function AdminDashboardPage() {
                 ))}
               </div>
             )}
-            <Link to="/admin/inquiries">
+            <Link to="/inquiries">
               <Button
                 variant="outline"
                 size="sm"

@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum IdolCategory {
+  Clay
+  Marble
+  EcoFriendly
+  PlasterOfParis
+  Metal
+  Fiber
+}
+
+enum InquirySource {
+  website
+  whatsapp
+}
+
+model Idol {
+  id            BigInt       @id @default(autoincrement())
+  name          String
+  description   String
+  category      IdolCategory
+  material      String
+  heightCm      BigInt
+  price         BigInt
+  images        Json
+  stockQuantity BigInt
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  inquiries     Inquiry[]
+}
+
+model Inquiry {
+  id               BigInt        @id @default(autoincrement())
+  idolId           BigInt?
+  idolName         String
+  customerName     String
+  email            String
+  phone            String
+  message          String
+  preferredContact String
+  source           InquirySource @default(website)
+  isRead           Boolean       @default(false)
+  isArchived       Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+
+  idol Idol? @relation(fields: [idolId], references: [id], onDelete: SetNull)
+}

@@ -1,0 +1,29 @@
+# Dependencies — pnpm hoists almost everything to the repo root (~tens of thousands of files)
+node_modules/
+package-lock.json
+
+# Environment (keep *.example tracked)
+.env
+.env.*
+!.env.example
+
+# API
+src/api/.env
+src/api/dist/
+src/api/src/generated/
+
+# Frontend build & env
+src/frontend/.env
+src/frontend/env.json
+src/frontend/dist/
+src/frontend/src/generated/
+src/frontend/src/declarations
+src/frontend/src/declarations.did*
+
+# IDE / OS
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/*
+!.vscode/extensions.json

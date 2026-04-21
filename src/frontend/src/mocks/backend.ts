@@ -1,4 +1,5 @@
-import type { backendInterface, Idol, Inquiry, IdolCategory } from "../backend";
+import type { backendInterface, Idol, IdolCategory } from "../backend";
+import type { Inquiry } from "@/types";
 
 const { IdolCategory: Cat } = await import("../backend.d");
 
@@ -121,8 +122,10 @@ const sampleInquiries: Inquiry[] = [
     idolName: "White Marble Ganesh",
     message: "I would like to purchase this idol for my home shrine. Please let me know the delivery options.",
     preferredContact: "phone",
+    source: "website",
     createdAt: now,
     isRead: false,
+    isArchived: false,
   },
   {
     id: 2n,
@@ -133,12 +136,28 @@ const sampleInquiries: Inquiry[] = [
     idolName: "Brass Ganesh Idol",
     message: "Is this available for bulk order? We need 5 pieces for our office.",
     preferredContact: "email",
+    source: "website",
     createdAt: now - 3_600_000_000_000n,
     isRead: true,
+    isArchived: false,
+  },
+  {
+    id: 3n,
+    customerName: "WhatsApp lead",
+    email: "whatsapp@pending.local",
+    phone: "9000000000",
+    idolId: 1n,
+    idolName: "Ganesh Clay Classic",
+    message: "Enquiry via WhatsApp — customer opened chat from idol page.",
+    preferredContact: "whatsapp",
+    source: "whatsapp",
+    createdAt: now - 7_200_000_000_000n,
+    isRead: false,
+    isArchived: false,
   },
 ];
 
-export const mockBackend: backendInterface = {
+export const mockBackend = {
   _immutableObjectStorageBlobsAreLive: async (hashes) => hashes.map(() => true),
   _immutableObjectStorageBlobsToDelete: async () => [],
   _immutableObjectStorageConfirmBlobDeletion: async () => {},
@@ -158,13 +177,21 @@ export const mockBackend: backendInterface = {
   deleteIdol: async () => true,
   submitInquiry: async (input) => ({
     id: BigInt(sampleInquiries.length + 1),
-    ...input,
+    idolId: input.idolId,
+    idolName: input.idolName,
+    customerName: input.customerName,
+    email: input.email,
+    phone: input.phone,
+    message: input.message,
+    preferredContact: input.preferredContact,
+    source: "website",
     createdAt: BigInt(Date.now()) * 1_000_000n,
     isRead: false,
+    isArchived: false,
   }),
   listInquiries: async () => sampleInquiries,
   markInquiryRead: async () => true,
   archiveInquiry: async () => true,
   categoryToText: async (cat) => String(cat),
   textToCategory: async (text) => text as unknown as IdolCategory | null,
-};
+} as unknown as backendInterface;

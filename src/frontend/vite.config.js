@@ -12,8 +12,9 @@ process.env.II_URL = process.env.II_URL || ii_url;
 process.env.STORAGE_GATEWAY_URL =
   process.env.STORAGE_GATEWAY_URL || "https://blob.caffeine.ai";
 
-export default defineConfig({
-  logLevel: "error",
+export default defineConfig(({ command }) => ({
+  // Quiet production builds; show dev server URL in `pnpm dev`
+  logLevel: command === "build" ? "error" : "info",
   build: {
     emptyOutDir: true,
     sourcemap: false,
@@ -30,7 +31,15 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
+    allowedHosts: [".localhost", "localhost", "admin.localhost"],
     proxy: {
+      // PostgreSQL REST API (Prisma) — must be before `/api` (ICP replica)
+      "/api/store": {
+        target: "http://127.0.0.1:4000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/store/, ""),
+      },
       "/api": {
         target: "http://127.0.0.1:4943",
         changeOrigin: true,
@@ -55,6 +64,6 @@ export default defineConfig({
         replacement: fileURLToPath(new URL("./src", import.meta.url)),
       },
     ],
-    dedupe: ["@dfinity/agent"]
+    dedupe: ["@dfinity/agent"],
   },
-});
+}));

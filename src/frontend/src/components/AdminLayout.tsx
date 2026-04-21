@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { useInternetIdentity } from "@caffeineai/core-infrastructure";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import { getMainStoreBaseUrl } from "@/lib/adminHost";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   ChevronRight,
   Image,
   LayoutDashboard,
-  LogIn,
   LogOut,
   MessageSquare,
   ShoppingBag,
@@ -16,52 +16,20 @@ interface AdminLayoutProps {
 }
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/admin/idols", label: "Manage Idols", icon: Image },
-  { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
+  { href: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { href: "/idols", label: "Manage Idols", icon: Image },
+  { href: "/inquiries", label: "Inquiries", icon: MessageSquare },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouterState();
+  const navigate = useNavigate();
+  const { logout } = useAdminAuth();
   const path = router.location.pathname;
-  const { identity, login, clear, loginStatus } = useInternetIdentity();
 
-  const isAuthenticated = !!identity;
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="bg-card border border-border rounded-xl shadow-elevated p-8 max-w-md w-full text-center">
-          <div className="w-16 h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag className="w-8 h-8 text-primary-foreground" />
-          </div>
-          <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-            Admin Access
-          </h2>
-          <p className="text-muted-foreground text-sm mb-6">
-            Sign in with Internet Identity to access the Ganpati Store admin
-            panel.
-          </p>
-          <Button
-            onClick={() => login()}
-            disabled={loginStatus === "logging-in"}
-            className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-smooth"
-            data-ocid="admin.login.submit_button"
-          >
-            <LogIn className="w-4 h-4" />
-            {loginStatus === "logging-in"
-              ? "Signing in…"
-              : "Sign in with Internet Identity"}
-          </Button>
-          <Link
-            to="/"
-            className="block mt-4 text-sm text-muted-foreground hover:text-primary transition-smooth"
-          >
-            ← Back to Store
-          </Link>
-        </div>
-      </div>
-    );
+  function handleLogout() {
+    logout();
+    navigate({ to: "/login" });
   }
 
   return (
@@ -119,7 +87,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <div className="p-3 border-t border-border">
           <button
             type="button"
-            onClick={() => clear()}
+            onClick={handleLogout}
             data-ocid="admin.sidebar.logout.button"
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg w-full text-sm font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-smooth"
           >
@@ -132,6 +100,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         <main className="flex-1 p-6 overflow-auto">{children}</main>
+        <div className="border-t border-border px-6 py-3 text-center">
+          <a
+            href={getMainStoreBaseUrl()}
+            className="text-sm text-muted-foreground hover:text-primary transition-smooth"
+          >
+            ← Back to Store
+          </a>
+        </div>
       </div>
     </div>
   );

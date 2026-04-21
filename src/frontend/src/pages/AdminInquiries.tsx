@@ -13,7 +13,7 @@ import {
   useInquiries,
   useMarkInquiryRead,
 } from "@/hooks/use-backend";
-import type { Inquiry } from "@/types";
+import type { Inquiry, InquirySource } from "@/types";
 import {
   Archive,
   CheckCircle,
@@ -31,6 +31,10 @@ function formatDate(ts: bigint): string {
     month: "short",
     year: "numeric",
   });
+}
+
+function sourceLabel(source: InquirySource): string {
+  return source === "whatsapp" ? "WhatsApp" : "Website";
 }
 
 function InquiryRow({
@@ -74,6 +78,18 @@ function InquiryRow({
             <p className="text-xs text-muted-foreground truncate">
               {inquiry.email}
             </p>
+            <div className="mt-1 xl:hidden">
+              <Badge
+                variant="secondary"
+                className={`text-[10px] px-1.5 py-0 ${
+                  inquiry.source === "whatsapp"
+                    ? "bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200"
+                    : ""
+                }`}
+              >
+                {sourceLabel(inquiry.source)}
+              </Badge>
+            </div>
           </div>
         </button>
       </td>
@@ -81,11 +97,28 @@ function InquiryRow({
         <p className="text-sm text-foreground truncate max-w-40">
           {inquiry.idolName}
         </p>
+        {inquiry.idolId == null && (
+          <p className="text-[10px] text-muted-foreground mt-0.5">
+            No linked idol
+          </p>
+        )}
       </td>
       <td className="px-4 py-3 hidden lg:table-cell">
         <span className="text-xs text-muted-foreground">
           {inquiry.preferredContact}
         </span>
+      </td>
+      <td className="px-4 py-3 hidden xl:table-cell">
+        <Badge
+          variant="secondary"
+          className={
+            inquiry.source === "whatsapp"
+              ? "bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200"
+              : ""
+          }
+        >
+          {sourceLabel(inquiry.source)}
+        </Badge>
       </td>
       <td className="px-4 py-3 hidden md:table-cell">
         <span className="text-xs text-muted-foreground">
@@ -157,6 +190,9 @@ function InquiriesTable({ items }: { items: Inquiry[] }) {
               </th>
               <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground hidden lg:table-cell">
                 Contact Pref.
+              </th>
+              <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground hidden xl:table-cell">
+                Source
               </th>
               <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground hidden md:table-cell">
                 Date
@@ -230,12 +266,22 @@ function InquiriesTable({ items }: { items: Inquiry[] }) {
                   {viewing.message}
                 </p>
               </div>
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5" />
                   {formatDate(viewing.createdAt)}
                 </div>
                 <Badge className="text-xs">{viewing.preferredContact}</Badge>
+                <Badge
+                  variant="secondary"
+                  className={
+                    viewing.source === "whatsapp"
+                      ? "text-xs bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200"
+                      : "text-xs"
+                  }
+                >
+                  {sourceLabel(viewing.source)}
+                </Badge>
               </div>
             </div>
           </DialogContent>
