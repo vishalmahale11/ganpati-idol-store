@@ -16,7 +16,7 @@ importers:
         specifier: ^0.34.4
         version: 0.34.5
 
-  src/api:
+  src/backend:
     dependencies:
       '@prisma/adapter-pg':
         specifier: ^7.0.0
