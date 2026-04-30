@@ -17,6 +17,10 @@ export function getMainStoreBaseUrl(): string {
 
 /** Admin panel origin (add `admin.` if missing). */
 export function getAdminPanelBaseUrl(): string {
+  const configured = import.meta.env.VITE_ADMIN_PANEL_URL;
+  if (configured && typeof configured === "string") {
+    return configured.replace(/\/$/, "");
+  }
   if (typeof window === "undefined") return "/";
   const { protocol, hostname, port } = window.location;
   if (hostname.startsWith("admin.")) {
