@@ -41,7 +41,7 @@ export function AdminLoginPage() {
           Admin sign in
         </h1>
         <p className="text-muted-foreground text-sm mb-6 text-center">
-          Sign in to manage the Ganpati Store admin panel.
+          Sign in to manage the Vakratunda Crafts admin panel.
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">

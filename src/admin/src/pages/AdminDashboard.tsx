@@ -50,7 +50,7 @@ export function AdminDashboardPage() {
             Dashboard
           </h1>
           <p className="text-muted-foreground text-sm mt-1">
-            Ganpati Store Admin Overview
+            Vakratunda Crafts Admin Overview
           </p>
         </div>
 

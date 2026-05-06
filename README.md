@@ -1,2 +1,2 @@
 # ganpati-idol-store
-Exported from Caffeine project: Ganpati Idol Store
+Exported from Caffeine project: Vakratunda Crafts

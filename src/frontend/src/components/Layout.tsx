@@ -30,11 +30,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="leading-tight">
               <span className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                Ganpati
+                Vakratunda
               </span>
               <span className="font-display text-lg font-bold text-primary">
                 {" "}
-                Store
+                Crafts
               </span>
             </div>
           </Link>
@@ -109,7 +109,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <ShoppingBag className="w-3.5 h-3.5 text-primary-foreground" />
               </div>
               <span className="font-display font-semibold text-foreground">
-                Ganpati Store
+                Vakratunda Crafts
               </span>
             </div>
             <p className="text-sm text-muted-foreground text-center">

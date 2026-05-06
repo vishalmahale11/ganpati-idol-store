@@ -154,5 +154,5 @@ app.get("/health", (_req, res) => {
     res.json({ ok: true, service: "ganpati-store-api" });
 });
 app.listen(PORT, () => {
-    console.log(`Ganpati store API listening on http://127.0.0.1:${PORT}`);
+    console.log(`Vakratunda Crafts API listening on http://127.0.0.1:${PORT}`);
 });
