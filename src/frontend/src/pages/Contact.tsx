@@ -40,7 +40,7 @@ const CONTACT_INFO: ContactInfoItem[] = [
   {
     icon: MapPin,
     label: "Visit Us",
-    value: "Dombivli, Maharashtra",
+    value: "Regency Anantam, Dombivli, Maharashtra",
     href: null,
   },
 ];
