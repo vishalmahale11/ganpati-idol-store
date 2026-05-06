@@ -93,12 +93,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </Link>
             ))}
-            <a href={getAdminPanelBaseUrl()} onClick={() => setMenuOpen(false)}>
-              <Button variant="outline" size="sm" className="mt-2 gap-2 w-full">
-                <Shield className="w-3.5 h-3.5" />
-                Admin Panel
-              </Button>
-            </a>
           </div>
         )}
       </header>
@@ -122,17 +116,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               Handcrafted Murtis for Your Festive Celebrations
             </p>
             <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()}. Built with love using{" "}
-              <a
-                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(
-                  typeof window !== "undefined" ? window.location.hostname : ""
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                caffeine.ai
-              </a>
+              © All Copyrights Reserved {new Date().getFullYear()}
             </p>
           </div>
         </div>

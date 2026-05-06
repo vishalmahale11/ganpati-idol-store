@@ -6,13 +6,7 @@ import { useIdol, useSubmitInquiry } from "@/hooks/use-backend";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { categoryLabel, formatPrice } from "@/types";
 import { Link, useParams } from "@tanstack/react-router";
-import {
-  ArrowLeft,
-  MessageCircle,
-  Package,
-  Ruler,
-  Tag,
-} from "lucide-react";
+import { ArrowLeft, MessageCircle, Package, Ruler, Tag } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 
@@ -29,7 +23,7 @@ export function IdolDetailPage() {
     if (!idol) return;
     if (!whatsappNumber.trim()) {
       toast.error(
-        "WhatsApp is not configured. Add VITE_WHATSAPP_NUMBER to your environment (digits only, e.g. 919876543210).",
+        "WhatsApp is not configured. Add VITE_WHATSAPP_NUMBER to your environment (digits only, e.g. 919876543210)."
       );
       return;
     }
@@ -55,15 +49,14 @@ export function IdolDetailPage() {
       },
       {
         onError: (err) => {
-          const aborted =
-            err instanceof Error && err.name === "AbortError";
+          const aborted = err instanceof Error && err.name === "AbortError";
           toast.error(
             aborted
               ? "Saving the lead timed out — is the API running? Your WhatsApp chat was opened."
-              : "Could not save this lead in the admin panel. Your WhatsApp chat was still opened.",
+              : "Could not save this lead in the admin panel. Your WhatsApp chat was still opened."
           );
         },
-      },
+      }
     );
   }
 
@@ -243,7 +236,7 @@ export function IdolDetailPage() {
                     type="button"
                     size="lg"
                     variant="outline"
-                    className="gap-2 border-border border-emerald-600/40 text-emerald-800 hover:bg-emerald-50 dark:text-emerald-200 dark:hover:bg-emerald-950/40"
+                    className="gap-2 border border-emerald-600/40 text-emerald-800 hover:bg-emerald-50 hover:text-emerald-950 dark:text-emerald-200 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-50"
                     onClick={handleWhatsAppEnquiry}
                     data-ocid="idol_detail.whatsapp.enquire_button"
                   >
