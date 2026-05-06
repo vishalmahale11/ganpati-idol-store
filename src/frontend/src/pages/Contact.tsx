@@ -28,19 +28,19 @@ const CONTACT_INFO: ContactInfoItem[] = [
   {
     icon: Phone,
     label: "Call Us",
-    value: "+91 98765 43210",
-    href: "tel:+919876543210",
+    value: "+91 9503891903",
+    href: "tel:+919503891903",
   },
   {
     icon: Mail,
     label: "Email Us",
-    value: "namaste@ganpatistore.in",
-    href: "mailto:namaste@ganpatistore.in",
+    value: "jganesh101@gmail.com",
+    href: "mailto:jganesh101@gmail.com",
   },
   {
     icon: MapPin,
     label: "Visit Us",
-    value: "Mumbai, Maharashtra",
+    value: "Regency Anantam, Dombivli, Maharashtra",
     href: null,
   },
 ];
@@ -122,7 +122,7 @@ export function ContactPage() {
       toast.error(
         aborted
           ? "Request timed out. Check that the store API is running (e.g. port 4000) and your database is reachable."
-          : "Failed to send inquiry. Please try again.",
+          : "Failed to send inquiry. Please try again."
       );
     }
   }
