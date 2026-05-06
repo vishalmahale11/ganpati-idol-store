@@ -30,11 +30,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="leading-tight">
               <span className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                Ganpati
+                Vakratunda
               </span>
               <span className="font-display text-lg font-bold text-primary">
                 {" "}
-                Store
+                Crafts
               </span>
             </div>
           </Link>
@@ -93,12 +93,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {link.label}
               </Link>
             ))}
-            <a href={getAdminPanelBaseUrl()} onClick={() => setMenuOpen(false)}>
-              <Button variant="outline" size="sm" className="mt-2 gap-2 w-full">
-                <Shield className="w-3.5 h-3.5" />
-                Admin Panel
-              </Button>
-            </a>
           </div>
         )}
       </header>
@@ -115,24 +109,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <ShoppingBag className="w-3.5 h-3.5 text-primary-foreground" />
               </div>
               <span className="font-display font-semibold text-foreground">
-                Ganpati Store
+                Vakratunda Crafts
               </span>
             </div>
             <p className="text-sm text-muted-foreground text-center">
               Handcrafted Murtis for Your Festive Celebrations
             </p>
             <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()}. Built with love using{" "}
-              <a
-                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(
-                  typeof window !== "undefined" ? window.location.hostname : ""
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                caffeine.ai
-              </a>
+              © All Copyrights Reserved {new Date().getFullYear()}
             </p>
           </div>
         </div>

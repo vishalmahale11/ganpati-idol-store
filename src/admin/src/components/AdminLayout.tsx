@@ -47,7 +47,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </div>
             <div className="leading-tight min-w-0">
               <p className="font-display text-sm font-bold text-foreground truncate">
-                Ganpati Store
+                Vakratunda Crafts
               </p>
               <p className="text-xs text-muted-foreground">Admin Panel</p>
             </div>

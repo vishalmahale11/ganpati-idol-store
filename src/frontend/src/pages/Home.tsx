@@ -19,11 +19,6 @@ const TRUST_SIGNALS = [
     desc: "Natural and biodegradable idols that honor nature",
   },
   {
-    icon: Truck,
-    title: "Safe Delivery",
-    desc: "Carefully packed and delivered to your doorstep",
-  },
-  {
     icon: Star,
     title: "Blessed Quality",
     desc: "Each idol crafted with devotion and attention to detail",
@@ -255,7 +250,7 @@ export function HomePage() {
         data-ocid="trust.section"
       >
         <div className="container max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {TRUST_SIGNALS.map((item, i) => (
               <motion.div
                 key={item.title}
